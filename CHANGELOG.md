@@ -17,6 +17,8 @@ All notable changes to Sourcegraph are documented in this file.
 
 ### Fixed
 
+- In the OSS version of Sourcegraph, authorization providers are properly initialized and GraphQL APIs are no longer blocked. [#3487](https://github.com/sourcegraph/sourcegraph/issues/3487)
+
 ### Removed
 
 ## 3.15.1
