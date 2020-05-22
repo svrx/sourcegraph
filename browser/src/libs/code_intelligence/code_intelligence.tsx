@@ -842,8 +842,7 @@ export function handleCodeHost({
             const { element, diffOrBlobInfo, getPositionAdjuster, getToolbarMount, toolbarButtonProps } = codeViewEvent
 
             const initializeModelAndViewerForFileInfo = (
-                fileInfo: FileInfoWithContent & FileInfoWithRepoNames,
-                useSelections?: boolean
+                fileInfo: FileInfoWithContent & FileInfoWithRepoNames
             ): CodeEditorWithPartialModel => {
                 const uri = toURIWithPath(fileInfo)
 
@@ -857,15 +856,10 @@ export function handleCodeHost({
                 }
 
                 // Add viewer
-                const editorSelections =
-                    useSelections && codeViewEvent.getSelections
-                        ? codeViewEvent.getSelections(codeViewEvent.element)
-                        : []
-
                 const editorData: CodeEditorData = {
                     type: 'CodeEditor' as const,
                     resource: uri,
-                    selections: editorSelections,
+                    selections: codeViewEvent.getSelections ? codeViewEvent.getSelections(codeViewEvent.element) : [],
                     isActive: true,
                 }
                 const editorId = extensionsController.services.viewer.addViewer(editorData)
@@ -891,15 +885,15 @@ export function handleCodeHost({
                 diffOrFileInfo: DiffOrBlobInfo<FileInfoWithContent>
             ): CodeEditorWithPartialModel => {
                 if (diffOrFileInfo.type === 'blob') {
-                    return initializeModelAndViewerForFileInfo(diffOrFileInfo, true)
+                    return initializeModelAndViewerForFileInfo(diffOrFileInfo)
                 } else if (diffHasHead(diffOrFileInfo) && diffHasBase(diffOrFileInfo)) {
-                    const editor = initializeModelAndViewerForFileInfo(diffOrFileInfo.head, true)
+                    const editor = initializeModelAndViewerForFileInfo(diffOrFileInfo.head)
                     initializeModelAndViewerForFileInfo(diffOrFileInfo.base)
                     return editor
                 } else if (diffHasBase(diffOrFileInfo)) {
-                    return initializeModelAndViewerForFileInfo(diffOrFileInfo.base, true)
+                    return initializeModelAndViewerForFileInfo(diffOrFileInfo.base)
                 }
-                return initializeModelAndViewerForFileInfo(diffOrFileInfo.head, true)
+                return initializeModelAndViewerForFileInfo(diffOrFileInfo.head)
             }
 
             const codeEditorWithPartialModel = initializeModelAndViewerForDiffOrFileInfo(diffOrBlobInfo)
