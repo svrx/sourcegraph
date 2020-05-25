@@ -61,19 +61,31 @@ Use the filters to switch between showing all campaigns, open campaigns, or clos
 1. Choose a branch name (or use the suggested one). This is the branch on each repository where the campaign's changes will be pushed to.
 1. Click the **Create campaign** button.
 
-You've created a new campaign, but it doesn't have any changes yet. Next, you can [add patches to specify what changes to make](#adding-patches-to-specify-what-changes-to-make).
+You've created a new campaign, but it doesn't have any changes yet. Next, you can [generate and upload patches to specify what changes to make](#generating-and-uploading-patches).
 
 If the changesets were already created (outside of campaigns), you can [track existing changesets](#tracking-existing-changesets) in your campaign.
 
-## Adding patches to specify what changes to make
+## Generating and uploading patches
 
-<!-- TODO(sqs): This section is rough/incomplete/outline-only. -->
+After you've [created a campaign](#creating-a-new-campaign), you tell it what changes to make by uploading a list of patches. A patch is a change (in diff format) to a specific repository on a specific branch.
 
-After you've [created a campaign](#creating-a-new-campaign), you can tell it what changes to make by submitting a list of patches. A patch is a change (in diff format) to a specific repository on a specific branch.
+> **Don't worry!** Before any branches are pushed or changesets (e.g., GitHub pull requests) are created, you will see a preview of all changes and can confirm each one before it's published.
 
-Don't worry! The campaign will show you a preview of all changesets (e.g., GitHub pull requests) that will be created from the patches. No repositories will be affected until you're ready and decide to publish the changesets.
+1. In your editor, create a [campaign action](actions.md) file, which defines the set of repositories to change and the commands to run in each repository to make the changes.
+1. Click the <img src="campaigns-icon.svg" alt="Campaigns icon" /> campaigns icon in the top navigation bar.
+1. In the list of campaigns, click the campaign where you'd like to upload patches.
+1. In the campaign, click the **Upload patches** button.
+1. In your terminal, run the command shown. The command will execute your [campaign action](actions.md) to generate patches and then upload them to the campaign for you to preview and accept.
 
-To provide a list of patches: <!-- TODO!(sqs) -->
+    > You need [Sourcegraph CLI (`src`)](https://github.com/sourcegraph/src-cli) for this step. For reference, the command shown by the campaign is the following (with <code><em>CAMPAIGN-ID</em></code> filled in):
+   <pre><code>src actions exec -f action.json | src campaign set-patches -preview -id=<em>CAMPAIGN-ID</em></code></pre>
+1. Open the preview URL that the command printed out.
+1. Examine the preview. Confirm that the patches' diffs are what you intended.
+   
+    (If not, edit your campaign action and then rerun the command above. Old and unused previews are automatically discarded, so you don't need to manually delete this preview.) <!-- TODO(sqs): mention that changesets still won't be published at this step (unless the user already published them), to alleviate worries? -->
+1. Click the **Update campaign** button.
+
+
 
 When you're ready, [publish the changesets](#publishing-changesets-to-the-code-host) to the code host.
 
