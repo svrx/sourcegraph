@@ -87,7 +87,9 @@ After you've [created a campaign](#creating-a-new-campaign), you tell it what ch
 
 After you've added patches, you can [publish changesets](#publishing-changesets-to-the-code-host) to the code host when you're ready. This will turn the patches into commits, branches, and changesets (such as GitHub pull requests) for others to review and merge.
 
-You can share the link to your campaign with other people if you want their help.
+You can share the link to your campaign with other people if you want their help. Any person on your Sourcegraph instance can [view it in the campaigns list](#viewing-campaigns).
+
+If a person viewing the campaign lacks read access to a repository in the campaign, they can only see [limited information about the changes to that repository](managing_access.md#repository-permissions-for-campaigns) (and not the repository name, file paths, or diff).
 
 You can update a campaign's changes at any time, even after you've published changesets. For more information, see "[Updating a campaign](#updating-a-campaign)".
 
@@ -101,15 +103,22 @@ The [example campaigns](examples/index.md) show how to use campaigns to make use
 
 ## Publishing changesets to the code host
 
-<!-- TODO(sqs): This section is rough/incomplete/outline-only. -->
+After you've added patches, you can see a preview of the changesets (e.g., GitHub pull requests) that will be created from the patches. Publishing the changesets will, for each repository:
 
-A changeset in a campaign is an unpublished preview until you decide to publish it to the code host.
-
-When you're ready, you can **publish** the changesets, which will, for each affected repository:
-
-- Create a commit with your changes
+- Create a commit with the changes (from the patches for that repository)
 - Push a branch (using the branch name you chose when creating the campaign)
 - Create a changeset (e.g., GitHub pull request) on the code host for review and merging
+
+When you're ready, you can publish all of a campaign's changesets, or just an individual changeset.
+
+1. Click the <img src="campaigns-icon.svg" alt="Campaigns icon" /> campaigns icon in the top navigation bar.
+1. In the list of campaigns, click the campaign that has changesets you'd like to publish.
+1. Click the **Publish** button next to a preview changeset to publish it.
+1. To publish all changesets (that have not already been published), click the **Publish all** button. If all changesets are already published, this button is not shown.
+
+You'll see a progress indicator when changesets are being published. Any errors will be shown, and you can retry publishing after you've resolved the problem. You don't need to worry about it creating multiple branches or pull requests when you retry, because it uses the same branch name.
+
+You need to have write access to the repository (on the code host) to publish a changeset. For more information, see "[Code host interactions in campaigns](managing_access.md#code-host-interactions-in-campaigns)". [Forking the repository](#known-issues) is not yet supported.
 
 ## Monitoring campaign progress and changeset statuses
 
