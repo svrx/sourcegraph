@@ -50,6 +50,8 @@ You can view a list of all campaigns by clicking the <img src="campaigns-icon.sv
 
 Use the filters to switch between showing all campaigns, open campaigns, or closed campaigns.
 
+If you lack read access to a repository in a campaign, you can only see [limited information about the changes to that repository](managing_access.md#repository-permissions-for-campaigns) (and not the repository name, file paths, or diff).
+
 ## Creating a new campaign
 
 > **Creating your first campaign?** See [Hello Universe Campaign](TODO) in Sourcegraph Guides for step-by-step instructions.
@@ -120,25 +122,23 @@ You'll see a progress indicator when changesets are being published. Any errors 
 
 You need to have write access to the repository (on the code host) to publish a changeset. For more information, see "[Code host interactions in campaigns](managing_access.md#code-host-interactions-in-campaigns)". [Forking the repository](#known-issues) is not yet supported.
 
-## Monitoring campaign progress and changeset statuses
+## Tracking campaign progress and changeset statuses
 
-<!-- TODO(sqs): This section is rough/incomplete/outline-only. -->
+A campaign tracks all of its changesets for updates to:
 
-A campaign monitors all of its changesets for updates to:
-
-- Status (open/merged/closed)
-- Checks (green/yellow/red combined check status)
-- Review status (approved/TODO)
+- Status: open, merged, or closed
+- Checks: passed (green), failed (red), or pending (yellow)
+- Review status: approved, changes requested, pending, or other statuses (depending on your code host or code review tool)
 
 You can see the overall trend of a campaign in the burndown chart, which shows the proportion of changesets that have been merged over time since the campaign was created.
 
-<!-- TODO(sqs): screenshot -->
+> TODO(sqs) screenshot
 
 In the list of changesets, you can see the detailed status for each changeset.
 
-<!-- TODO(sqs): screenshot -->
+> TODO(sqs) screenshot
 
-If you lack access to view a repository, any changesets in that repository will appear grayed out in the list. Only a subset of information will be shown. For more information, see "[Repository permissions for campaigns](managing_access.md#repository-permissions-for-campaigns)".
+If you lack read access to a repository, you can only see [limited information about the changes to that repository](managing_access.md#repository-permissions-for-campaigns) (and not the repository name, file paths, or diff).
 
 ## Updating a campaign
 
@@ -146,11 +146,32 @@ If you lack access to view a repository, any changesets in that repository will 
 
 ## Tracking existing changesets
 
-<!-- TODO(sqs): This section is rough/incomplete/outline-only. -->
+<!-- TODO(sqs): needs wireframes/mocks -->
+
+1. Click the <img src="campaigns-icon.svg" alt="Campaigns icon" /> campaigns icon in the top navigation bar.
+1. *To use an existing campaign:* In the list of campaigns, click the campaign where you'd like to track existing changesets.
+
+    *To create a new campaign:* Click the **＋ New campaign** button. For more information, see "[Creating a new campaign](#creating-a-new-campaign)".
+1. On the right side of the **Changesets** list, use the **＋** menu and select **Existing changeset**.
+1. Type in the name of the changeset's repository.
+
+    This is the repository's name on Sourcegraph. If you can visit the repository at `https://sourcegraph.example.com/foo/bar`, the name is `foo/bar`. Depending on the configuration, it may or may not begin with a hostname (such as `github.com/foo/bar`).
+1. Type in the changeset number (e.g., the GitHub pull request number).
+1. Click **Add**.
+
+You'll see the existing changeset in the list. The campaign will track the changeset's status and include it in the overall campaign progress (in the same way as if it had been created by the campaign). For more information, see "[Tracking campaign progress and changeset statuses](#tracking-campaign-progress-and-changeset-statuses)".
 
 ## Closing or deleting a campaign
 
-<!-- TODO(sqs): This section is rough/incomplete/outline-only. -->
+You can close a campaign when you don't need it anymore, when all changes have been merged, or when you decided not to proceed with making all of the changes. A closed campaign still appears in the [campaigns list](#viewing-campaigns). To completely remove it, you can delete the campaign.
+
+Any person with [admin access to the campaign](managing_access.md#permission-levels-for-campaigns) can close or delete it.
+
+1. Click the <img src="campaigns-icon.svg" alt="Campaigns icon" /> campaigns icon in the top navigation bar.
+1. In the list of campaigns, click the campaign that you'd like to close or delete.
+1. In the top right, click the **Close** or **Delete** button.
+1. Select whether you want to close all of the campaign's changesets (e.g., closing all associated GitHub pull requests on the code host).
+1. Click **TODO** <!-- decide/confirm button label -->.
 
 ## [Managing access to campaigns](managing_access.md)
 
