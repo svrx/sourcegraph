@@ -85,9 +85,9 @@ After you've [created a campaign](#creating-a-new-campaign), you tell it what ch
     (If not, edit your campaign action and then rerun the command above. Old and unused previews are automatically discarded, so you don't need to manually delete this preview.) <!-- TODO(sqs): mention that changesets still won't be published at this step (unless the user already published them), to alleviate worries? -->
 1. Click the **Update campaign** button.
 
+After you've added patches, you can [publish changesets](#publishing-changesets-to-the-code-host) to the code host when you're ready. This will turn the patches into commits, branches, and changesets (such as GitHub pull requests) for others to review and merge.
 
-
-When you're ready, [publish the changesets](#publishing-changesets-to-the-code-host) to the code host.
+You can share the link to your campaign with other people if you want their help.
 
 You can update a campaign's changes at any time, even after you've published changesets. For more information, see "[Updating a campaign](#updating-a-campaign)".
 
