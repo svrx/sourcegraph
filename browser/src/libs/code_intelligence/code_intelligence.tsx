@@ -105,7 +105,7 @@ import {
     registerNativeTooltipContributions,
 } from './native_tooltips'
 import { handleTextFields, TextField } from './text_fields'
-import { resolveRepoNamesForDiffOrFileInfo, diffHasHead, diffHasBase, ensureRev } from './util/file_info'
+import { resolveRepoNamesForDiffOrFileInfo, ensureRev } from './util/file_info'
 import { delayUntilIntersecting, ViewResolver } from './views'
 
 import { IS_LIGHT_THEME } from './consts'
@@ -263,27 +263,11 @@ export interface CodeHost extends ApplyLinkPreviewOptions {
 /**
  * A blob (single file `FileInfo`) or a diff (with a head `FileInfo` and/or base `FileInfo`)
  */
-export type DiffOrBlobInfo<T extends FileInfo = FileInfo> = ({ type: 'blob' } & T) | FileDiff<T>
-
-export type DiffOrBlobInfoOrError<T extends FileInfo = FileInfo> =
-    | DiffOrBlobInfo<T>
-    | { type: 'error'; error: ErrorLike }
-
-export type FileDiff<T extends FileInfo = FileInfo> = AddedFileDiff<T> | ModifiedFileDiff<T> | RemovedFileDiff<T>
-
-export interface AddedFileDiff<T extends FileInfo = FileInfo> {
-    type: 'added'
-    head: T
-}
-export interface ModifiedFileDiff<T extends FileInfo = FileInfo> {
-    type: 'modified'
-    head: T
-    base: T
-}
-export interface RemovedFileDiff<T extends FileInfo = FileInfo> {
-    type: 'removed'
-    base: T
-}
+export type DiffOrBlobInfo<T extends FileInfo = FileInfo> =
+    | { blob: T }
+    | { head: T }
+    | { head: T; base: T }
+    | { base: T }
 
 export interface FileInfo {
     /**
@@ -752,7 +736,7 @@ export function handleCodeHost({
                     throw err
                 }),
                 tap({
-                    error: error => {
+                    error: (error: ErrorLike) => {
                         if (codeViewEvent.getToolbarMount) {
                             const mount = codeViewEvent.getToolbarMount(codeViewEvent.element)
                             render(
@@ -884,13 +868,13 @@ export function handleCodeHost({
             const initializeModelAndViewerForDiffOrFileInfo = (
                 diffOrFileInfo: DiffOrBlobInfo<FileInfoWithContent>
             ): CodeEditorWithPartialModel => {
-                if (diffOrFileInfo.type === 'blob') {
-                    return initializeModelAndViewerForFileInfo(diffOrFileInfo)
-                } else if (diffHasHead(diffOrFileInfo) && diffHasBase(diffOrFileInfo)) {
+                if ('blob' in diffOrFileInfo) {
+                    return initializeModelAndViewerForFileInfo(diffOrFileInfo.blob)
+                } else if ('head' in diffOrFileInfo && 'base' in diffOrFileInfo) {
                     const editor = initializeModelAndViewerForFileInfo(diffOrFileInfo.head)
                     initializeModelAndViewerForFileInfo(diffOrFileInfo.base)
                     return editor
-                } else if (diffHasBase(diffOrFileInfo)) {
+                } else if ('base' in diffOrFileInfo) {
                     return initializeModelAndViewerForFileInfo(diffOrFileInfo.base)
                 }
                 return initializeModelAndViewerForFileInfo(diffOrFileInfo.head)
@@ -940,29 +924,27 @@ export function handleCodeHost({
 
             // Apply decorations coming from extensions
             if (!minimalUI) {
-                if (diffOrBlobInfo.type === 'blob') {
-                    applyDecorationsForFileInfo(diffOrBlobInfo)
-                } else if (diffHasHead(diffOrBlobInfo)) {
+                if ('blob' in diffOrBlobInfo) {
+                    applyDecorationsForFileInfo(diffOrBlobInfo.blob)
+                } else if ('head' in diffOrBlobInfo) {
                     applyDecorationsForFileInfo(diffOrBlobInfo.head, 'head')
-                } else if (diffHasBase(diffOrBlobInfo)) {
+                } else if ('base' in diffOrBlobInfo) {
                     applyDecorationsForFileInfo(diffOrBlobInfo.base, 'base')
                 }
             }
 
             // Add hover code intelligence
             const resolveContext: ContextResolver<RepoSpec & RevSpec & FileSpec & ResolvedRevSpec> = ({ part }) => {
-                if (diffOrBlobInfo.type === 'blob') {
-                    return ensureRev(diffOrBlobInfo)
-                } else if (diffHasHead(diffOrBlobInfo) && part === 'head') {
+                if ('blob' in diffOrBlobInfo) {
+                    return ensureRev(diffOrBlobInfo.blob)
+                } else if ('head' in diffOrBlobInfo && part === 'head') {
                     return ensureRev(diffOrBlobInfo.head)
                 }
-                if (diffHasBase(diffOrBlobInfo) && part === 'base') {
+                if ('base' in diffOrBlobInfo && part === 'base') {
                     return ensureRev(diffOrBlobInfo.base)
                 }
                 // TODO: confirm if we should throw an error here.
-                throw new Error(
-                    `Could not resolve context for diff part "${part}" on a diff of type "${diffOrBlobInfo.type}"`
-                )
+                throw new Error(`Could not resolve context for diff part "${part}"`)
             }
 
             const adjustPosition = getPositionAdjuster?.(platformContext.requestGraphQL)

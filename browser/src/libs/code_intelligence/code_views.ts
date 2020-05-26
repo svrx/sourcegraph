@@ -9,7 +9,7 @@ import { FileSpec, RepoSpec, ResolvedRevSpec, RevSpec } from '../../../../shared
 import { ButtonProps } from '../../shared/components/CodeViewToolbar'
 import { fetchBlobContentLines } from '../../shared/repo/backend'
 import { CodeHost, FileInfoWithRepoNames, FileInfoWithContent, DiffOrBlobInfo } from './code_intelligence'
-import { ensureRevisionIsClonedForFileInfo, diffHasHead, diffHasBase } from './util/file_info'
+import { ensureRevisionIsClonedForFileInfo } from './util/file_info'
 import { trackViews, ViewResolver, ViewWithSubscriptions } from './views'
 import { MutationRecordLike } from '../../shared/util/dom'
 
@@ -125,11 +125,11 @@ export const fetchFileContentForDiffOrFileInfo = (
     diffOrBlobInfo: DiffOrBlobInfo<FileInfoWithRepoNames>,
     requestGraphQL: PlatformContext['requestGraphQL']
 ): Observable<DiffOrBlobInfo<FileInfoWithContent>> => {
-    if (diffOrBlobInfo.type === 'blob') {
-        return fetchFileContentForFileInfo(diffOrBlobInfo, requestGraphQL).pipe(
+    if ('blob' in diffOrBlobInfo) {
+        return fetchFileContentForFileInfo(diffOrBlobInfo.blob, requestGraphQL).pipe(
             map(fileInfo => ({ ...diffOrBlobInfo, fileInfo }))
         )
-    } else if (diffHasHead(diffOrBlobInfo) && diffHasBase(diffOrBlobInfo)) {
+    } else if ('head' in diffOrBlobInfo && 'base' in diffOrBlobInfo) {
         const fetchingBaseFile = fetchFileContentForFileInfo(diffOrBlobInfo.base, requestGraphQL)
         const fetchingHeadFile = fetchFileContentForFileInfo(diffOrBlobInfo.head, requestGraphQL)
 
@@ -140,7 +140,7 @@ export const fetchFileContentForDiffOrFileInfo = (
                 base,
             }))
         )
-    } else if (diffHasHead(diffOrBlobInfo)) {
+    } else if ('head' in diffOrBlobInfo) {
         return fetchFileContentForFileInfo(diffOrBlobInfo.head, requestGraphQL).pipe(
             map(head => ({ ...diffOrBlobInfo, head }))
         )
