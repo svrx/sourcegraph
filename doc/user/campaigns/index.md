@@ -150,7 +150,8 @@ To update a campaign, you need [admin access to the campaign](managing_access.md
 
 1. Click the <img src="campaigns-icon.svg" alt="Campaigns icon" /> campaigns icon in the top navigation bar.
 1. In the list of campaigns, click the campaign that you want to edit.
-AAAAAAA1. In the campaign, click the ***Upload patches** button.
+<!-- TODO(sqs): needs to handle edit name case as well, not just upload patches -->
+1. In the campaign, click the ***Upload patches** button.
 1. In your terminal, run the command shown. The command will execute your [campaign action](actions.md) to generate patches and then upload them to the campaign for you to preview and accept.
 
     > You need [Sourcegraph CLI (`src`)](https://github.com/sourcegraph/src-cli) for this step. For reference, the command shown by the campaign is the following (with <code><em>CAMPAIGN-ID</em></code> filled in):
