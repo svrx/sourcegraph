@@ -11,11 +11,11 @@ LABEL com.sourcegraph.github.url=https://github.com/sourcegraph/sourcegraph/comm
 
 # hadolint ignore=DL3018
 RUN apk update && apk add --no-cache \
-  tini
+    tini
 
 # TODO(efritz) - install lsif-go and src-cli
 
 USER sourcegraph
 EXPOSE 3189
-ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/precise-code-intel-api-indexer"]
-COPY precise-code-intel-api-indexer /usr/local/bin/
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/precise-code-intel-indexer"]
+COPY precise-code-intel-indexer /usr/local/bin/
