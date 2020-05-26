@@ -288,7 +288,7 @@ export interface FileInfo {
     rev?: string
 }
 
-export interface FileInfoWithRepoNames extends FileInfo, RepoSpec {}
+export interface FileInfoWithRepoName extends FileInfo, RepoSpec {}
 export interface FileInfoWithContent extends FileInfoWithRepoNames {
     content?: string
 }
