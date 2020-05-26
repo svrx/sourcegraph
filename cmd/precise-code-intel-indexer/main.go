@@ -29,7 +29,7 @@ func main() {
 	tracer.Init()
 
 	var (
-		frontendURL                      = mustGet(rawFrontendURL, "FRONTEND_URL")
+		frontendURL                      = mustGet(rawFrontendURL, "SRC_FRONTEND_INTERNAL")
 		indexerPollInterval              = mustParseInterval(rawIndexerPollInterval, "PRECISE_CODE_INTEL_INDEXER_POLL_INTERVAL")
 		indexSchedulerInterval           = mustParseInterval(rawIndexSchedulerInterval, "PRECISE_CODE_INTEL_INDEX_SCHEDULER_INTERVAL")
 		indexabilitySchedulerInterval    = mustParseInterval(rawIndexabilitySchedulerInterval, "PRECISE_CODE_INTEL_INDEXABILITY_SCHEDULER_INTERVAL")

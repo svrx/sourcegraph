@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -9,7 +10,7 @@ import (
 )
 
 var (
-	rawFrontendURL                      = env.Get("FRONTEND_URL", "", "HTTP address for the frontend.")
+	rawFrontendURL, _                   = os.LookupEnv("SRC_FRONTEND_INTERNAL")
 	rawIndexerPollInterval              = env.Get("PRECISE_CODE_INTEL_INDEXER_POLL_INTERVAL", "1s", "Interval between queries to the index queue.")
 	rawIndexabilitySchedulerInterval    = env.Get("PRECISE_CODE_INTEL_INDEXABILITY_SCHEDULER_INTERVAL", "30m", "Interval between scheduled indexability updates.")
 	rawIndexSchedulerInterval           = env.Get("PRECISE_CODE_INTEL_INDEX_SCHEDULER_INTERVAL", "30m", "Interval between scheduled index updates.")
