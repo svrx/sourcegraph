@@ -11,7 +11,7 @@ LABEL com.sourcegraph.github.url=https://github.com/sourcegraph/sourcegraph/comm
 
 # hadolint ignore=DL3018
 RUN apk update && apk add --no-cache \
-    tini
+  tini
 
 # TODO(efritz) - install lsif-go and src-cli
 

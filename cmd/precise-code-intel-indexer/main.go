@@ -1,11 +1,15 @@
 package main
 
 import (
+<<<<<<< HEAD
 	"log"
+=======
+>>>>>>> master
 	"os"
 	"os/signal"
 	"syscall"
 
+<<<<<<< HEAD
 	"github.com/inconshreveable/log15"
 	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus"
@@ -20,6 +24,11 @@ import (
 	"github.com/sourcegraph/sourcegraph/internal/env"
 	"github.com/sourcegraph/sourcegraph/internal/observation"
 	"github.com/sourcegraph/sourcegraph/internal/trace"
+=======
+	"github.com/sourcegraph/sourcegraph/cmd/precise-code-intel-indexer/internal/server"
+	"github.com/sourcegraph/sourcegraph/internal/debugserver"
+	"github.com/sourcegraph/sourcegraph/internal/env"
+>>>>>>> master
 	"github.com/sourcegraph/sourcegraph/internal/tracer"
 )
 
@@ -28,6 +37,7 @@ func main() {
 	env.HandleHelpFlag()
 	tracer.Init()
 
+<<<<<<< HEAD
 	var (
 		frontendURL                      = mustGet(rawFrontendURL, "FRONTEND_URL")
 		indexerPollInterval              = mustParseInterval(rawIndexerPollInterval, "PRECISE_CODE_INTEL_INDEXER_POLL_INTERVAL")
@@ -84,6 +94,11 @@ func main() {
 	go indexabilityScheduler.Start()
 	go indexScheduler.Start()
 	go indexer.Start()
+=======
+	server := server.New()
+
+	go server.Start()
+>>>>>>> master
 	go debugserver.Start()
 
 	// Attempt to clean up after first shutdown signal
@@ -98,6 +113,7 @@ func main() {
 	}()
 
 	server.Stop()
+<<<<<<< HEAD
 	indexer.Stop()
 	indexScheduler.Stop()
 	indexabilityScheduler.Stop()
@@ -117,4 +133,6 @@ func mustInitializeDatabase() db.DB {
 	}
 
 	return db
+=======
+>>>>>>> master
 }

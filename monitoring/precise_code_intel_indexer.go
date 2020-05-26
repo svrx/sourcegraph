@@ -4,7 +4,7 @@ func PreciseCodeIntelIndexer() *Container {
 	return &Container{
 		Name:        "precise-code-intel-indexer",
 		Title:       "Precise Code Intel Indexer",
-		Description: "TODO.",
+		Description: "Automatically indexes from popular, active Go repositories.",
 		Groups: []Group{
 			{
 				Title: "General",

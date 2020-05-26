@@ -24,6 +24,7 @@ var allDockerImages = []string{
 	"precise-code-intel-indexer",
 
 	// Images under docker-images/
+	"cadvisor",
 	"grafana",
 	"indexed-searcher",
 	"postgres-11.4",
