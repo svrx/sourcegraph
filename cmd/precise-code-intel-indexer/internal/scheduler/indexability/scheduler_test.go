@@ -16,7 +16,6 @@ import (
 	"github.com/sourcegraph/sourcegraph/internal/metrics"
 )
 
-
 func TestMain(m *testing.M) {
 	flag.Parse()
 	if !testing.Verbose() {
