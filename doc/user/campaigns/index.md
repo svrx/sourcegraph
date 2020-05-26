@@ -84,7 +84,7 @@ After you've [created a campaign](#creating-a-new-campaign), you tell it what ch
 1. Open the preview URL that the command printed out.
 1. Examine the preview. Confirm that the patches' diffs are what you intended.
    
-    (If not, edit your campaign action and then rerun the command above. Old and unused previews are automatically discarded, so you don't need to manually delete this preview.) <!-- TODO(sqs): mention that changesets still won't be published at this step (unless the user already published them), to alleviate worries? -->
+    (If not, edit your campaign action and then rerun the command above. Old and unused previews are automatically discarded, so you don't need to manually delete this preview.)
 1. Click the **Update campaign** button.
 
 After you've added patches, you can [publish changesets](#publishing-changesets-to-the-code-host) to the code host when you're ready. This will turn the patches into commits, branches, and changesets (such as GitHub pull requests) for others to review and merge.
@@ -120,7 +120,7 @@ When you're ready, you can publish all of a campaign's changesets, or just an in
 
 You'll see a progress indicator when changesets are being published. Any errors will be shown, and you can retry publishing after you've resolved the problem. You don't need to worry about it creating multiple branches or pull requests when you retry, because it uses the same branch name.
 
-You need to have write access to the repository (on the code host) to publish a changeset. For more information, see "[Code host interactions in campaigns](managing_access.md#code-host-interactions-in-campaigns)". [Forking the repository](#known-issues) is not yet supported.
+To publish a changeset, you need admin access to the campaign and write access to the changeset's repository (on the code host). For more information, see "[Code host interactions in campaigns](managing_access.md#code-host-interactions-in-campaigns)". [Forking the repository](#known-issues) is not yet supported.
 
 ## Tracking campaign progress and changeset statuses
 
@@ -142,7 +142,27 @@ If you lack read access to a repository, you can only see [limited information a
 
 ## Updating a campaign
 
-<!-- TODO(sqs): This section is rough/incomplete/outline-only. -->
+<!-- TODO(sqs): needs wireframes/mocks -->
+
+You can edit a campaign's name and description, and upload new patches, at any time. If you haven't yet published any changesets, you can also choose a different branch name for the campaign.
+
+To update a campaign, you need [admin access to the campaign](managing_access.md#campaign-access-for-each-permission-level), and [write access to all affected repositories](managing_access.md#repository-permissions-for-campaigns) with published changesets.
+
+1. Click the <img src="campaigns-icon.svg" alt="Campaigns icon" /> campaigns icon in the top navigation bar.
+1. In the list of campaigns, click the campaign that you want to edit.
+AAAAAAA1. In the campaign, click the ***Upload patches** button.
+1. In your terminal, run the command shown. The command will execute your [campaign action](actions.md) to generate patches and then upload them to the campaign for you to preview and accept.
+
+    > You need [Sourcegraph CLI (`src`)](https://github.com/sourcegraph/src-cli) for this step. For reference, the command shown by the campaign is the following (with <code><em>CAMPAIGN-ID</em></code> filled in):
+   <pre><code>src actions exec -f action.json | src campaign set-patches -preview -id=<em>CAMPAIGN-ID</em></code></pre>
+1. Open the preview URL that the command printed out.
+1. Examine the preview. Confirm that the patches' diffs are what you intended.
+   
+    (If not, edit your campaign action and then rerun the command above. Old and unused previews are automatically discarded, so you don't need to manually delete this preview.)
+1. Click the **Update campaign** button.
+
+1. In your editor, create a [campaign action](actions.md) file, which defines the set of repositories to change and the commands to run in each repository to make the changes.
+
 
 ## Tracking existing changesets
 
