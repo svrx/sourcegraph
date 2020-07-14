@@ -18,6 +18,7 @@ All notable changes to Sourcegraph are documented in this file.
 ### Fixed
 
 - In the OSS version of Sourcegraph, authorization providers are properly initialized and GraphQL APIs are no longer blocked. [#3487](https://github.com/sourcegraph/sourcegraph/issues/3487)
+- An issue that caused campaigns to fail loading when a referenced repo was deleted has been fixed. [#11021](https://github.com/sourcegraph/sourcegraph/pull/11021)
 
 ### Removed
 
